@@ -1,4 +1,4 @@
-package com.mgtlake.streamSaver;
+package test;
 
 public class streamSaver {
     public static void main(String[] args) {
@@ -6,5 +6,6 @@ public class streamSaver {
         streamView view = new streamView(model);
         new streamController(model,view);
         view.setVisible(true);
+        System.out.println("test");
     }
 }

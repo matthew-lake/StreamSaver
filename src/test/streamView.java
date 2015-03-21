@@ -1,4 +1,4 @@
-package com.mgtlake.streamSaver;
+package test;
 
 import java.awt.Color;
 import java.awt.Container;

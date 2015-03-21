@@ -1,4 +1,4 @@
-package com.mgtlake.streamSaver;
+package test;
 
 public class streamModel {
 
