@@ -12,11 +12,11 @@ public class streamController {
         this.model = model;
         this.view = view;
         start = true;
-        view.addPlusListener(new PlusActionListener());
-        view.addClearListener(new ClearActionListener());
-        for (int i=0; i < 10; i++) {
-            view.addNumberListener(new NumberActionListener(),i);
-        }
+//        view.addPlusListener(new PlusActionListener());
+//        view.addClearListener(new ClearActionListener());
+//        for (int i=0; i < 10; i++) {
+//            view.addNumberListener(new NumberActionListener(),i);
+//        }
     }
 
 
