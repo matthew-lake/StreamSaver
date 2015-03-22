@@ -8,14 +8,52 @@ import java.lang.ProcessBuilder;
 public class streamModel {
     private String charset = "UTF-8";
     private String playlistUrl;
-    private InputStream response;
-
-//    public streamModel() {
-//        result = 0;
-//    }
+    private String playlist;
+    public String ffmpegPath = "\\working";
+    private String bandwidth;
 
     public void prep(String url) {
         url = url.substring(0, url.indexOf('m')) + "media/media_load_hls_mp4.php" + url.split("php")[1];
+        String doc = get(url);
+        playlistUrl = "http" + doc.split("m3u8")[0].split("http")[doc.split("m3u8")[0].split("http").length - 1] + "m3u8";
+        playlist = get(playlistUrl);
+        System.out.println(playlist);
+        bandwidth = playlist.split("BANDWIDTH=")[1].split(",")[0];
+        System.out.println(bandwidth);
+        String command = "-i " + playlistUrl + " -c copy \"" + "test4" + ".ts\"";
+        System.out.println(command);
+//        download(command);
+    }
+
+    public void download(String command){
+        command = "-i Drive.mkv drive6.ts";
+        ffmpegPath = "C:\\Users\\mgtlake\\Downloads\\ffmpeg-20150312-git-3bedc99-win64-static\\ffmpeg-20150312-git-3bedc99-win64-static\\bin\\";
+        String path = ffmpegPath + "ffmpeg.exe";
+//        path = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
+        File file = new File(path);
+        if (! file.exists()) {
+            System.out.println("The file " + path + " does not exist");
+        }
+        try {
+            Process p = Runtime.getRuntime().exec(path + " " + command);
+            BufferedReader is = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            String line;
+            while ((line = is.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
+        catch (IOException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public String get(String url) {
+        InputStream response = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+        };
         try {
             URLConnection connection = new URL(url).openConnection();
             connection.setRequestProperty("Accept-Charset", charset);
@@ -28,36 +66,7 @@ public class streamModel {
             System.out.println(e.toString());
         }
         String strResponse = convertStreamToString(response);
-        String playlist = "http" + strResponse.split("m3u8")[0].split("http")[strResponse.split("m3u8")[0].split("http").length - 1] + "m3u8";
-        String command = "-i " + playlist + " -c copy \"" + "test4" + ".ts\"";
-        System.out.println(command);
-        download(command);
-    }
-
-    public void download(String command){
-        command = "-i Drive.mkv drive5.mkv -v quiet";
-        String path = "C:\\Users\\mgtlake\\Downloads\\ffmpeg-20150312-git-3bedc99-win64-static\\ffmpeg-20150312-git-3bedc99-win64-static\\bin\\";
-        path += "ffmpeg.exe";
-//        path = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
-        File file = new File(path);
-        if (! file.exists()) {
-            System.out.println("The file " + path + " does not exist");
-        }
-        try {
-            Process p = Runtime.getRuntime().exec(path + " " + command);
-//            Process process = new ProcessBuilder(path,command).start();
-//            Process process = new ProcessBuilder(path,"-private").start();
-
-//            // Create ProcessBuilder.
-//            ProcessBuilder p = new ProcessBuilder();
-//
-//            // Use command "notepad.exe" and open the file.
-//            p.command("notepad.exe");
-//            p.start();
-        }
-        catch (IOException e) {
-            System.out.println(e.toString());
-        }
+        return strResponse;
     }
 
 //    public int getResult() {
