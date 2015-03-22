@@ -1,5 +1,7 @@
 package test;
 
+import javafx.stage.FileChooser;
+
 import javax.imageio.IIOException;
 import javax.swing.*;
 import java.awt.*;
@@ -23,9 +25,10 @@ public class streamModel {
             System.out.println(playlist);
             bandwidth = Integer.parseInt(playlist.split("BANDWIDTH=")[1].split(",")[0]);
             System.out.println(bandwidth);
-            String command = "-i " + playlistUrl + " -c copy \"" + "test6" + ".ts\" -y";
+            String command = "-i " + playlistUrl + " -c copy \"" + "temp.ts\" -y";
             if (JOptionPane.showConfirmDialog(null,"Download" + playlistUrl + "?","Confirm Download",0) == 0) {
-                download(command);
+//                download(command);
+//                save();
             }
         }
         catch (Exception e) {
@@ -56,6 +59,7 @@ public class streamModel {
                     int size = Integer.parseInt(line.split("size=")[1].split("kB")[0].trim());
                     double percent = 100 * size / (double) bandwidth;
                     System.out.println(String.valueOf(percent));
+                    progressBar.setValue((int) percent);
                 }
                 catch (Exception e) {
                     System.out.println(line);
@@ -95,6 +99,7 @@ public class streamModel {
     }
 
     public void showError(Exception e, String message) {
+        System.out.println(e.toString());
         JPanel p = new JPanel();
         JLabel label = new JLabel(message);
         label.setFont(new Font("sansSerif", Font.PLAIN, 18));
