@@ -6,6 +6,5 @@ public class streamSaver {
         streamView view = new streamView(model);
         new streamController(model,view);
         view.setVisible(true);
-        System.out.println("test");
     }
 }

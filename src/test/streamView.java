@@ -1,6 +1,7 @@
 package test;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -16,7 +17,7 @@ public class streamView extends JFrame {
     public streamView(streamModel model) {
         this.model = model;
         setTitle("Stream Saver");
-        setBounds(400,200,850,200);
+        setBounds(400, 200, 850, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         Container c = getContentPane();
         addDisplay(c);
@@ -27,14 +28,14 @@ public class streamView extends JFrame {
         JPanel p = new JPanel();
         urlLabel = new JLabel("Video URL:");
         urlLabel.setFont(font);
-        urlField = new JTextField("" + model.getResult(),40);
+        urlField = new JTextField("",40);
         p.setPreferredSize(new Dimension(850, 90));
         urlField.setFont(font);
         urlField.setEditable(true);
         urlField.setBackground(Color.WHITE);
         p.add(urlLabel);
         p.add(urlField);
-        c.add(p,"North");
+        c.add(p, "North");
     }
 
     private void addButtons(Container c) {
@@ -46,54 +47,12 @@ public class streamView extends JFrame {
         p.add(download);
         c.add(p,"South");
     }
-//
-//    private void addNumbers(JPanel p) {
-//        numbers = new JButton [10];
-//        for (int i=0; i < 10; i++) {
-//            numbers[i] = new JButton("" + i);
-//            numbers[i].setFont(font);
-//            numbers[i].setBackground(Color.WHITE);
-//            p.add(numbers[i]);
-//        }
-//    }
-//
-//    private void addPlus(JPanel p) {
-//        plus = new JButton("+");
-//        plus.setFont(font);
-//        plus.setBackground(Color.WHITE);
-//        plus.setForeground(Color.RED);
-//        p.add(plus);
-//    }
-//
-//    private void addClear(JPanel p) {
-//        clear = new JButton("C");
-//        clear.setFont(font);
-//        clear.setBackground(Color.WHITE);
-//        clear.setForeground(Color.BLUE);
-//        p.add(clear);
-//    }
-
-    public void clear() {
-        urlField.setText("" + model.getResult());
-    }
 
     public String getText() {
         return urlField.getText();
     }
 
-    public void setText(String s) {
-        urlField.setText(s);
+    public void addDownloadListener(ActionListener pl) {
+        download.addActionListener(pl);
     }
-
-//    public void addPlusListener(ActionListener pl) {
-//        plus.addActionListener(pl);
-//    }
-//
-//    public void addClearListener(ActionListener pl) {
-//        clear.addActionListener(pl);
-//    }
-//
-//    public void addNumberListener(ActionListener pl, int n) {
-//        numbers[n].addActionListener(pl);
-//    }
 }

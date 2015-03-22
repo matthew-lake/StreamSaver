@@ -12,37 +12,12 @@ public class streamController {
         this.model = model;
         this.view = view;
         start = true;
-//        view.addPlusListener(new PlusActionListener());
-//        view.addClearListener(new ClearActionListener());
-//        for (int i=0; i < 10; i++) {
-//            view.addNumberListener(new NumberActionListener(),i);
-//        }
+        view.addDownloadListener(new DownloadActionListener());
     }
 
-
-    private class NumberActionListener implements ActionListener {
+    private class DownloadActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e){
-            String val = e.getActionCommand();
-            if (start || view.getText().equals("0"))
-                view.setText(val);
-            else
-                view.setText(view.getText() + val);
-            start = false;
-        }
-    }
-
-    private class PlusActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e){
-            model.add(Integer.parseInt(view.getText()));
-            view.setText("" + model.getResult());
-            start = true;
-        }
-    }
-
-    private class ClearActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            model.clear();
-            view.clear();
+            model.prep(view.getText());
             start = true;
         }
     }

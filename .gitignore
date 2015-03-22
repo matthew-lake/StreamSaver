@@ -13,3 +13,7 @@ hs_err_pid*
 
 # IntelliJ files
 .idea/
+
+# Test videos
+*.ts
+*.mkv
