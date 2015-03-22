@@ -1,6 +1,8 @@
 package test;
 
 import javax.imageio.IIOException;
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.lang.ProcessBuilder;
@@ -13,16 +15,22 @@ public class streamModel {
     private int bandwidth;
 
     public void prep(String url) {
-        url = url.substring(0, url.indexOf('m')) + "media/media_load_hls_mp4.php" + url.split("php")[1];
-        String doc = get(url);
-        playlistUrl = "http" + doc.split("m3u8")[0].split("http")[doc.split("m3u8")[0].split("http").length - 1] + "m3u8";
-        playlist = get(playlistUrl);
-        System.out.println(playlist);
-        bandwidth = Integer.parseInt(playlist.split("BANDWIDTH=")[1].split(",")[0]);
-        System.out.println(bandwidth);
-        String command = "-i " + playlistUrl + " -c copy \"" + "test6" + ".ts\" -y";
-        System.out.println(command);
-        download(command);
+        try {
+            url = url.substring(0, url.indexOf('m')) + "media/media_load_hls_mp4.php" + url.split("php")[1];
+            String doc = get(url);
+            playlistUrl = "http" + doc.split("m3u8")[0].split("http")[doc.split("m3u8")[0].split("http").length - 1] + "m3u8";
+            playlist = get(playlistUrl);
+            System.out.println(playlist);
+            bandwidth = Integer.parseInt(playlist.split("BANDWIDTH=")[1].split(",")[0]);
+            System.out.println(bandwidth);
+            String command = "-i " + playlistUrl + " -c copy \"" + "test6" + ".ts\" -y";
+            if (JOptionPane.showConfirmDialog(null,"Download" + playlistUrl + "?","Confirm Download",0) == 0) {
+                download(command);
+            }
+        }
+        catch (Exception e) {
+            showError(e, "Video not found");
+        }
     }
 
     public void download(String command){
@@ -36,6 +44,12 @@ public class streamModel {
         try {
             Process p = Runtime.getRuntime().exec(path + " " + command);
             BufferedReader is = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+            JProgressBar progressBar;
+            progressBar = new JProgressBar(0, 100);
+            progressBar.setValue(0);
+            progressBar.setStringPainted(true);
+
             String line;
             while ((line = is.readLine()) != null) {
                 try {
@@ -49,7 +63,7 @@ public class streamModel {
             }
         }
         catch (IOException e) {
-            System.out.println(e.toString());
+            showError(e, "FFmpeg not found");
         }
     }
 
@@ -75,31 +89,19 @@ public class streamModel {
         return strResponse;
     }
 
-//    public int getResult() {
-//        return result;
-//    }
-
-//    public void clear() {
-//        result = 0;
-//    }
-
-//    var newUrl = url.substr(0, url.indexOf('m')) + "media/media_load_hls_mp4.php" + url.split('php')[1];
-//    var request = new XMLHttpRequest();
-//    request.withCredentials = true;
-//    request.onload = reqListener;
-//    request.open("get", newUrl, true);
-//    request.send();
-//}
-//
-//    function reqListener () {
-//        var doc = this.responseText;
-//        var playlist = "http" + doc.split('m3u8')[0].split('http')[doc.split('m3u8')[0].split('http').length - 1] + "m3u8";
-//        var command = "ffmpeg -i " + playlist + " -c copy \"" + document.title + ".ts\"";
-//        console.log(command);
-//    }
-
     static String convertStreamToString(java.io.InputStream is) {
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
+    }
+
+    public void showError(Exception e, String message) {
+        JPanel p = new JPanel();
+        JLabel label = new JLabel(message);
+        label.setFont(new Font("sansSerif", Font.PLAIN, 18));
+        JLabel details = new JLabel(e.toString());
+        details.setFont(new Font("sansSerif", Font.PLAIN, 14));
+        p.add(label);
+        p.add(details);
+        JOptionPane.showMessageDialog(null,p,"Error",JOptionPane.ERROR_MESSAGE);
     }
 }
