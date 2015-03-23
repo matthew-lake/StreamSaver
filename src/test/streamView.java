@@ -12,6 +12,9 @@ public class streamView extends JFrame {
     private JButton download;
     private Font font = new Font("SanSerif", Font.PLAIN, 24);
     private streamModel model;
+    private JProgressBar progressBar;
+    private Container c;
+    private JPanel pButton;
 
 
     public streamView(streamModel model) {
@@ -19,9 +22,11 @@ public class streamView extends JFrame {
         setTitle("Stream Saver");
         setBounds(400, 200, 850, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        Container c = getContentPane();
+        c = getContentPane();
         addDisplay(c);
-        addButtons(c);
+        addButton(c);
+        addProgress();
+        model.addView(this);
     }
 
     private void addDisplay(Container c) {
@@ -38,14 +43,33 @@ public class streamView extends JFrame {
         c.add(p, "North");
     }
 
-    private void addButtons(Container c) {
-        JPanel p = new JPanel();
+    private void addButton(Container c) {
+        pButton = new JPanel();
         download = new JButton("Download");
         download.setFont(font);
-        download.setBackground(Color.WHITE);
-        download.setForeground(Color.BLACK);
-        p.add(download);
-        c.add(p,"South");
+        pButton.add(download);
+        c.add(pButton,"South");
+    }
+
+    public void removeButton() {
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
+        getContentPane().add(progressBar);
+    }
+
+    public void addProgress() {
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
+        getContentPane().add(progressBar);
+    }
+
+    public void setProgress(int value) {
+        System.out.println("Setting progressbar to: " + value);
+        progressBar.setValue(value);
+        progressBar.repaint();
+        progressBar.update(progressBar.getGraphics());
     }
 
     public String getText() {

@@ -8,15 +8,22 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.lang.ProcessBuilder;
+import java.nio.file.Path;
 
 public class streamModel {
+    private streamView view;
     private String charset = "UTF-8";
     private String playlistUrl;
     private String playlist;
     public String ffmpegPath = "\\working";
     private int bandwidth;
 
+    public  void addView(streamView newView) {
+        view = newView;
+    }
+
     public void prep(String url) {
+        view.setProgress(50);
         try {
             url = url.substring(0, url.indexOf('m')) + "media/media_load_hls_mp4.php" + url.split("php")[1];
             String doc = get(url);
@@ -26,9 +33,11 @@ public class streamModel {
             bandwidth = Integer.parseInt(playlist.split("BANDWIDTH=")[1].split(",")[0]);
             System.out.println(bandwidth);
             String command = "-i " + playlistUrl + " -c copy \"" + "temp.ts\" -y";
+            view.setProgress(75);
             if (JOptionPane.showConfirmDialog(null,"Download" + playlistUrl + "?","Confirm Download",0) == 0) {
-//                download(command);
-//                save();
+                download(command);
+                view.setProgress(60);
+                save();
             }
         }
         catch (Exception e) {
@@ -37,7 +46,7 @@ public class streamModel {
     }
 
     public void download(String command){
-//        command = "-i Drive.mkv drive6.ts";
+        view.setProgress(20);
         ffmpegPath = "C:\\Users\\mgtlake\\Downloads\\ffmpeg-20150312-git-3bedc99-win64-static\\ffmpeg-20150312-git-3bedc99-win64-static\\bin\\";
         String path = ffmpegPath + "ffmpeg.exe";
         File file = new File(path);
@@ -48,10 +57,8 @@ public class streamModel {
             Process p = Runtime.getRuntime().exec(path + " " + command);
             BufferedReader is = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-            JProgressBar progressBar;
-            progressBar = new JProgressBar(0, 100);
-            progressBar.setValue(0);
-            progressBar.setStringPainted(true);
+            view.removeButton();
+//            view.addProgressBar();
 
             String line;
             while ((line = is.readLine()) != null) {
@@ -59,7 +66,8 @@ public class streamModel {
                     int size = Integer.parseInt(line.split("size=")[1].split("kB")[0].trim());
                     double percent = 100 * size / (double) bandwidth;
                     System.out.println(String.valueOf(percent));
-                    progressBar.setValue((int) percent);
+//                    view.setProgress((int) percent);
+                    view.setProgress(1);
                 }
                 catch (Exception e) {
                     System.out.println(line);
@@ -91,6 +99,26 @@ public class streamModel {
         }
         String strResponse = convertStreamToString(response);
         return strResponse;
+    }
+
+    public void save() {
+        File file = new File("temp.ts");
+        File destination = new File("");
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Save Video");
+
+        int userSelection = fc.showSaveDialog(null);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            destination = fc.getSelectedFile();
+            System.out.println("Save as file: " + destination.getAbsolutePath());
+        }
+
+        try {
+            java.nio.file.Files.move(file.toPath(),destination.toPath());
+        }
+        catch (IOException e) {
+            showError(e,"Error saving video");
+        }
     }
 
     static String convertStreamToString(java.io.InputStream is) {
