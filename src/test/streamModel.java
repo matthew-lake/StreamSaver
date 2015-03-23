@@ -32,12 +32,20 @@ public class streamModel {
             System.out.println(playlist);
             bandwidth = Integer.parseInt(playlist.split("BANDWIDTH=")[1].split(",")[0]);
             System.out.println(bandwidth);
-            String command = "-i " + playlistUrl + " -c copy \"" + "temp.ts\" -y";
+            final String command = "-i " + playlistUrl + " -c copy \"" + "temp.ts\" -y";
             view.setProgress(75);
             if (JOptionPane.showConfirmDialog(null,"Download" + playlistUrl + "?","Confirm Download",0) == 0) {
-                download(command);
                 view.setProgress(60);
-                save();
+                Runnable runner = new Runnable()
+                {
+                    public void run() {
+                        String c = command;
+                        download(c);
+                        save();
+                    }
+                };
+                Thread t = new Thread(runner, "Code Executer");
+                t.start();
             }
         }
         catch (Exception e) {
@@ -57,17 +65,13 @@ public class streamModel {
             Process p = Runtime.getRuntime().exec(path + " " + command);
             BufferedReader is = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-            view.removeButton();
-//            view.addProgressBar();
-
             String line;
             while ((line = is.readLine()) != null) {
                 try {
                     int size = Integer.parseInt(line.split("size=")[1].split("kB")[0].trim());
                     double percent = 100 * size / (double) bandwidth;
                     System.out.println(String.valueOf(percent));
-//                    view.setProgress((int) percent);
-                    view.setProgress(1);
+                    view.setProgress((int) percent);
                 }
                 catch (Exception e) {
                     System.out.println(line);

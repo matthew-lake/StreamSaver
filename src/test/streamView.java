@@ -20,7 +20,7 @@ public class streamView extends JFrame {
     public streamView(streamModel model) {
         this.model = model;
         setTitle("Stream Saver");
-        setBounds(400, 200, 850, 200);
+        setBounds(400, 200, 850, 250);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         c = getContentPane();
         addDisplay(c);
@@ -49,13 +49,6 @@ public class streamView extends JFrame {
         download.setFont(font);
         pButton.add(download);
         c.add(pButton,"South");
-    }
-
-    public void removeButton() {
-        progressBar = new JProgressBar(0, 100);
-        progressBar.setValue(0);
-        progressBar.setStringPainted(true);
-        getContentPane().add(progressBar);
     }
 
     public void addProgress() {
