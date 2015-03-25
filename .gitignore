@@ -13,6 +13,8 @@ hs_err_pid*
 
 # IntelliJ files
 .idea/
+bin/
+out/
 
 # Test videos
 *.ts

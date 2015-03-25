@@ -1,29 +1,69 @@
 package test;
 
-import javafx.stage.FileChooser;
-
-import javax.imageio.IIOException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
-import java.lang.ProcessBuilder;
-import java.nio.file.Path;
 
 public class streamModel {
     private streamView view;
     private String charset = "UTF-8";
     private String playlistUrl;
     private String playlist;
-    public String ffmpegPath = "\\working";
+    public String workingPath = "working\\";
     private int bandwidth;
 
     public  void addView(streamView newView) {
         view = newView;
     }
 
+    public void init() {
+        UIManager UI=new UIManager();
+        UI.put("OptionPane.background", Color.white);
+        UI.put("Panel.background", Color.white);
+
+        JPanel p = new JPanel();
+        p.setBackground(Color.white);
+        JTextArea text = new JTextArea( "License Terms:\n" +
+                "\n" +
+                "Do not evil\n" +
+                "\n" +
+                "The MIT License (MIT)\n" +
+                "\n" +
+                "Copyright (c) 2015 Matthew Lake\n" +
+                "\n" +
+                "Permission is hereby granted, free of charge, to any person obtaining a copy\n" +
+                "of this software and associated documentation files (the \"Software\"), to deal\n" +
+                "in the Software without restriction, including without limitation the rights\n" +
+                "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n" +
+                "copies of the Software, and to permit persons to whom the Software is\n" +
+                "furnished to do so, subject to the following conditions:\n" +
+                "\n" +
+                "The above copyright notice and this permission notice shall be included in all\n" +
+                "copies or substantial portions of the Software.\n" +
+                "\n" +
+                "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" +
+                "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" +
+                "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" +
+                "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" +
+                "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
+                "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n" +
+                "SOFTWARE.\n",10,50);
+        text.setFont(new Font("sansSerif", Font.PLAIN, 18));
+        text.setEditable(false);
+        p.add(text);
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+
+        String[] options = new String[2];
+        options[0] = new String("Accept");
+        options[1] = new String("Decline");
+        int result = JOptionPane.showOptionDialog(null, p, "License",0,JOptionPane.INFORMATION_MESSAGE,null,options,null);
+        if(result == 1){
+            System.exit(0);
+        }
+    }
+
     public void prep(String url) {
-        view.setProgress(50);
         try {
             url = url.substring(0, url.indexOf('m')) + "media/media_load_hls_mp4.php" + url.split("php")[1];
             String doc = get(url);
@@ -32,10 +72,8 @@ public class streamModel {
             System.out.println(playlist);
             bandwidth = Integer.parseInt(playlist.split("BANDWIDTH=")[1].split(",")[0]);
             System.out.println(bandwidth);
-            final String command = "-i " + playlistUrl + " -c copy \"" + "temp.ts\" -y";
-            view.setProgress(75);
+            final String command = "-i " + playlistUrl + " -c copy \"working\\temp.ts\" -y";
             if (JOptionPane.showConfirmDialog(null,"Download" + playlistUrl + "?","Confirm Download",0) == 0) {
-                view.setProgress(60);
                 Runnable runner = new Runnable()
                 {
                     public void run() {
@@ -54,9 +92,8 @@ public class streamModel {
     }
 
     public void download(String command){
-        view.setProgress(20);
-        ffmpegPath = "C:\\Users\\mgtlake\\Downloads\\ffmpeg-20150312-git-3bedc99-win64-static\\ffmpeg-20150312-git-3bedc99-win64-static\\bin\\";
-        String path = ffmpegPath + "ffmpeg.exe";
+//        workingPath = "C:\\Users\\mgtlake\\Downloads\\ffmpeg-20150312-git-3bedc99-win64-static\\ffmpeg-20150312-git-3bedc99-win64-static\\bin\\";
+        String path = workingPath + "ffmpeg.exe";
         File file = new File(path);
         if (! file.exists()) {
             System.out.println("The file " + path + " does not exist");
@@ -106,7 +143,7 @@ public class streamModel {
     }
 
     public void save() {
-        File file = new File("temp.ts");
+        File file = new File(workingPath + "temp.ts");
         File destination = new File("");
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Save Video");

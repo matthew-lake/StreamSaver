@@ -15,6 +15,7 @@ public class streamController {
         this.model = model;
         this.view = view;
         view.addDownloadListener(new DownloadActionListener());
+        model.init();
     }
 
     private class DownloadActionListener implements ActionListener {

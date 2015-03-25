@@ -10,6 +10,7 @@ public class streamView extends JFrame {
     private JLabel urlLabel;
     private JTextField urlField;
     private JButton download;
+    private JButton help;
     private Font font = new Font("SanSerif", Font.PLAIN, 24);
     private streamModel model;
     private JProgressBar progressBar;
@@ -59,7 +60,6 @@ public class streamView extends JFrame {
     }
 
     public void setProgress(int value) {
-        System.out.println("Setting progressbar to: " + value);
         progressBar.setValue(value);
         progressBar.repaint();
         progressBar.update(progressBar.getGraphics());
