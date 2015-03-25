@@ -178,4 +178,31 @@ public class streamModel {
         p.add(details);
         JOptionPane.showMessageDialog(null,p,"Error",JOptionPane.ERROR_MESSAGE);
     }
+
+    public void showHelp() {
+        UIManager UI=new UIManager();
+        UI.put("OptionPane.background", Color.white);
+        UI.put("Panel.background", Color.white);
+
+        JPanel p = new JPanel();
+        p.setBackground(Color.white);
+        JTextArea text = new JTextArea(
+                "Check that a directory called 'working' exists on the same level as this program, and contains FFmpeg.exe. If errors persist, try updating FFmpeg. I can be reached at mgtlake@outlook.com if you want to report a bug or request a feature." +
+                "\n" +
+                "Known bugs:\n" +
+
+                "- Stream Saver will only download the first part of a multi part video\n" +
+                "- The progress bar is only an approximate based upon the best available information. It is normal for it to end before 100% or to linger on 100%.\n" +
+                "\n" +
+                "License Terms:\n" +
+                "Do not evil\n" +
+                "Licensed under the The MIT License (MIT), accessable at http://opensource.org/licenses/MIT\n" +
+                "Copyright (c) 2015 Matthew Lake", 15, 40);
+        text.setFont(new Font("sansSerif", Font.PLAIN, 18));
+        text.setEditable(false);
+        text.setWrapStyleWord(true);
+        text.setLineWrap(true);
+        p.add(text);
+        JOptionPane.showMessageDialog(null, p, "Help", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

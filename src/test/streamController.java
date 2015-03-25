@@ -15,12 +15,19 @@ public class streamController {
         this.model = model;
         this.view = view;
         view.addDownloadListener(new DownloadActionListener());
+        view.addHelpListener(new HelpActionListener());
         model.init();
     }
 
     private class DownloadActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e){
             model.prep(view.getText());
+        }
+    }
+
+    private class HelpActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e){
+            model.showHelp();
         }
     }
 }

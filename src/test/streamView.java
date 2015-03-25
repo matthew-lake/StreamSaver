@@ -49,6 +49,8 @@ public class streamView extends JFrame {
         download = new JButton("Download");
         download.setFont(font);
         pButton.add(download);
+        help = new JButton("Help");
+        pButton.add(help,"East");
         c.add(pButton,"South");
     }
 
@@ -71,5 +73,9 @@ public class streamView extends JFrame {
 
     public void addDownloadListener(ActionListener pl) {
         download.addActionListener(pl);
+    }
+
+    public void addHelpListener(ActionListener pl) {
+        help.addActionListener(pl);
     }
 }
