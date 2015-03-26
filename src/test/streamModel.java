@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+//import org.apache.commons.io.*;
 
 public class streamModel {
     private streamView view;
@@ -146,12 +147,19 @@ public class streamModel {
         File file = new File(workingPath + "temp.ts");
         File destination = new File("");
         JFileChooser fc = new JFileChooser();
+        fc.setCurrentDirectory(new File(System.getProperty("user.home") + System.getProperty("line.separator")+ "Music"));
         fc.setDialogTitle("Save Video");
 
         int userSelection = fc.showSaveDialog(null);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             destination = fc.getSelectedFile();
             System.out.println("Save as file: " + destination.getAbsolutePath());
+
+//            if (FilenameUtils.getExtension(destination.getName()).equalsIgnoreCase("ts")) {
+//                // filename is OK as-is
+//            } else {
+//                destination = new File(destination.getParentFile(), FilenameUtils.getBaseName(destination.getName())+".ts");
+//            }
         }
 
         try {
