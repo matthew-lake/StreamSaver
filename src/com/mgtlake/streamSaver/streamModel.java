@@ -78,7 +78,7 @@ public class streamModel {
             url = url.substring(0, url.indexOf('m')) + "media/media_load_hls_mp4.php" + url.split("php")[1];
             String doc = get(url);
             playlistUrl = "http" + doc.split("m3u8")[0].split("http")[doc.split("m3u8")[0].split("http").length - 1] + "m3u8";
-            for (int i = 0;i<doc.split("m3u8").length;i++) {
+            for (int i = 0;i<doc.split("m3u8").length -1 ;i++) {
                 System.out.println("http" + doc.split("m3u8")[i].split("http")[doc.split("m3u8")[i].split("http").length - 1] + "m3u8");
             }
             playlist = get(playlistUrl);
@@ -111,7 +111,6 @@ public class streamModel {
             System.out.println("The file " + path + " does not exist");
         }
         try {
-            System.out.println(file.getCanonicalPath());
             Process p = Runtime.getRuntime().exec(path + " " + command);
             BufferedReader is = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
@@ -167,7 +166,7 @@ public class streamModel {
             destination = fc.getSelectedFile();
             System.out.println("Save as file: " + destination.getAbsolutePath());
             if (!destination.getName().endsWith(".ts")) {
-                destination = new File(destination.getParentFile(), destination.getAbsolutePath()+".ts");
+                destination = new File(destination.getParentFile(), destination.getName()+".ts");
             }
 
 //            if (FilenameUtils.getExtension(destination.getName()).equalsIgnoreCase("ts")) {
