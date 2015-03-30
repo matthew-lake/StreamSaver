@@ -73,6 +73,7 @@ public class streamView extends JFrame {
 
     public void addDownloadListener(ActionListener pl) {
         download.addActionListener(pl);
+        urlField.addActionListener(pl);
     }
 
     public void addHelpListener(ActionListener pl) {

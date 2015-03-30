@@ -60,7 +60,7 @@ public class streamModel {
             text.setFont(new Font("sansSerif", Font.PLAIN, 18));
             text.setEditable(false);
             p.add(text);
-            int dialogButton = JOptionPane.YES_NO_OPTION;
+//            int dialogButton = JOptionPane.YES_NO_OPTION;
 
             String[] options = new String[2];
             options[0] = new String("Accept");
@@ -81,9 +81,9 @@ public class streamModel {
                 System.out.println("http" + doc.split("m3u8")[i].split("http")[doc.split("m3u8")[i].split("http").length - 1] + "m3u8");
             }
             playlist = get(playlistUrl);
-            System.out.println(playlist);
+//            System.out.println(playlist);
             bandwidth = Integer.parseInt(playlist.split("BANDWIDTH=")[1].split(",")[0]);
-            System.out.println(bandwidth);
+//            System.out.println(bandwidth);
             final String command = "-i " + playlistUrl + " -c copy \"working\\temp.ts\" -y";
             if (JOptionPane.showConfirmDialog(null,"Download" + playlistUrl + "?","Confirm Download",0) == 0) {
                 Runnable runner = new Runnable()
