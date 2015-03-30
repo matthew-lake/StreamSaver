@@ -5,7 +5,6 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.prefs.Preferences;
-//import org.apache.commons.io.*;
 
 public class streamModel {
     private streamView view;
@@ -168,12 +167,6 @@ public class streamModel {
             if (!destination.getName().endsWith(".ts")) {
                 destination = new File(destination.getParentFile(), destination.getName()+".ts");
             }
-
-//            if (FilenameUtils.getExtension(destination.getName()).equalsIgnoreCase("ts")) {
-//                // filename is OK as-is
-//            } else {
-//                destination = new File(destination.getParentFile(), FilenameUtils.getBaseName(destination.getName())+".ts");
-//            }
         }
 
         try {
